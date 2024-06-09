@@ -1,0 +1,110 @@
+#!/usr/bin/env php
+<?php
+
+$pluginName = readline('Enter Plugin Name: '); 
+$pluginName = ucwords($pluginName);
+$pluginDescription = readline('Enter Plugin Description: ');
+$pluginAuthor = readline('Enter Plugin Author: ');
+$pluginAuthorURI = readline('Enter Plugin Author URI: ');
+$pluginuri = readline('Enter Plugin URI: ');
+$pluginVersion = readline('Enter Plugin Version: ');
+$pluginLicense = readline('Enter Plugin License: ');
+$pluginLicenseURI = readline('Enter Plugin License URI: ');
+$pluginTextDomain = readline('Enter Plugin Text Domain: ');
+$pluginDomainPath = readline('Enter Plugin Domain Path: ');
+$pluginNetwork = readline('Is this a network plugin? (y/n): ');
+$pluginNetwork = strtolower($pluginNetwork) == 'y' ? 'true' : 'false';
+$pluginRequiresWP = readline('Enter Plugin Requires WP Version: ');
+$pluginRequiresPHP = readline('Enter Plugin Requires PHP Version: ');
+$pluginTestedWP = readline('Enter Plugin Tested WP Version: ');
+$pluginTestedPHP = readline('Enter Plugin Tested PHP Version: ');
+
+
+$pluginSlug = strtolower(str_replace(' ', '-', $pluginName));
+
+$plugin_key = readline('Enter Plugin Key: ');
+$plugin_key = strtoupper(str_replace(' ', '_', $plugin_key));
+
+
+$plugin_function_key = readline('Enter Plugin Function Key: ');
+
+$plugin_function_key = strtolower(str_replace(' ', '_', $plugin_function_key));
+
+$plugin_file = $pluginSlug . '.php';
+//plugin-name.php load
+$configfileContents = file_get_contents('plugin-name.php');
+
+$mutedCodes=str_replace(
+    [
+        'plugin-name',
+        'PLUGIN_NAME_STRING',
+        'Plugin_Name',
+        'PLUGIN_URI',
+        'PLUGIN_DESCRIPTION',
+        'PlUGIN_VERSION',
+        'PLUGIN_AUTHOR',
+        'TEXT_DOMAIN',
+        'plugin_name',
+    ],
+    [
+        $pluginSlug,
+        $pluginName,
+        $plugin_key,
+        $pluginuri,
+        $pluginDescription,
+        $pluginVersion,
+        $pluginAuthor,
+        $pluginTextDomain,
+        $plugin_function_key,
+
+
+    ],
+    $configfileContents
+);
+file_put_contents($plugin_file, $mutedCodes);
+
+// check all dirs and rename plugin-name also replace the changes
+$dirs = array_filter(glob('*'), 'is_dir');
+foreach ($dirs as $dir) {
+    $dir = $dir . '/';
+    $files = array_filter(glob($dir . '*'), 'is_file');
+    foreach ($files as $file) {
+        $fileContents = file_get_contents($file);
+        $mutedCodes = str_replace(
+            [
+                'plugin-name',
+                'PLUGIN_NAME_STRING',
+                'Plugin_Name',
+                'PLUGIN_URI',
+                'PLUGIN_DESCRIPTION',
+                'PlUGIN_VERSION',
+                'PLUGIN_AUTHOR',
+                'TEXT_DOMAIN',
+                'plugin_name',
+            ],
+            [
+                $pluginSlug,
+                $pluginName,
+                $plugin_key,
+                $pluginuri,
+                $pluginDescription,
+                $pluginVersion,
+                $pluginAuthor,
+                $pluginTextDomain,
+                $plugin_function_key,
+            ],
+            $fileContents
+        );
+        file_put_contents($file, $mutedCodes);
+    }
+    $newDir = str_replace('plugin-name', $pluginSlug, $dir);
+    rename($dir, $newDir);
+}
+// remove 
+unlink('plugin-name.php');
+//remove sohagwp
+unlink('sohagwp');
+echo "Plugin Created Successfully\n";
+echo "Plugin Name: $pluginName\n";
+echo "Plugin Description: $pluginDescription\n";
+echo "Plugin Author: $pluginAuthor\n";
