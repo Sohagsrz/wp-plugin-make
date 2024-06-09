@@ -4,21 +4,18 @@
 $pluginName = readline('Enter Plugin Name: '); 
 $pluginName = ucwords($pluginName);
 $pluginDescription = readline('Enter Plugin Description: ');
+$pluginDescription = empty($pluginDescription) ? 'This is a plugin' : $pluginDescription;
 $pluginAuthor = readline('Enter Plugin Author: ');
+$pluginAuthor = empty($pluginAuthor) ? 'Sohag Srz' : $pluginAuthor;
 $pluginAuthorURI = readline('Enter Plugin Author URI: ');
+$pluginAuthorURI = empty($pluginAuthorURI) ? 'https://sohag.xyz' : $pluginAuthorURI;
 $pluginuri = readline('Enter Plugin URI: ');
+$pluginuri = empty($pluginuri) ? 'https://sohag.xyz' : $pluginuri;
 $pluginVersion = readline('Enter Plugin Version: ');
-$pluginLicense = readline('Enter Plugin License: ');
-$pluginLicenseURI = readline('Enter Plugin License URI: ');
+$pluginVersion = empty($pluginVersion) ? '1.0.0' : $pluginVersion;
 $pluginTextDomain = readline('Enter Plugin Text Domain: ');
-$pluginDomainPath = readline('Enter Plugin Domain Path: ');
-$pluginNetwork = readline('Is this a network plugin? (y/n): ');
-$pluginNetwork = strtolower($pluginNetwork) == 'y' ? 'true' : 'false';
-$pluginRequiresWP = readline('Enter Plugin Requires WP Version: ');
-$pluginRequiresPHP = readline('Enter Plugin Requires PHP Version: ');
-$pluginTestedWP = readline('Enter Plugin Tested WP Version: ');
-$pluginTestedPHP = readline('Enter Plugin Tested PHP Version: ');
-
+$pluginTextDomain = empty($pluginTextDomain) ? strtolower(str_replace(' ', '-', $pluginName)) : $pluginTextDomain;
+ 
 
 $pluginSlug = strtolower(str_replace(' ', '-', $pluginName));
 
