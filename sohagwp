@@ -15,11 +15,12 @@ $pluginVersion = readline('Enter Plugin Version: ');
 $pluginVersion = empty($pluginVersion) ? '1.0.0' : $pluginVersion;
 $pluginTextDomain = readline('Enter Plugin Text Domain: ');
 $pluginTextDomain = empty($pluginTextDomain) ? strtolower(str_replace(' ', '-', $pluginName)) : $pluginTextDomain;
- 
+
 
 $pluginSlug = strtolower(str_replace(' ', '-', $pluginName));
 
 $plugin_key = readline('Enter Plugin Key: ');
+$plugin_key = empty($plugin_key) ? $pluginSlug : $plugin_key;
 $plugin_key = strtoupper(str_replace(' ', '_', $plugin_key));
 
 
@@ -43,8 +44,8 @@ $replaceString=  [
 ];
 $replaceStringWith=[
     $pluginSlug,
-    $plugin_key,
     $pluginName,
+    $plugin_key,
     $pluginuri,
     $pluginDescription,
     $pluginVersion,
@@ -65,18 +66,21 @@ foreach ($files as $file) {
         $newName = str_replace('plugin-name', $pluginSlug, $file);
         rename($file, $newName);
     }
-    if (is_file($file) && $file != 'create-plugin.php') {
+    if (is_file($file) && $file != 'sohagwp') {
         $fileContents = file_get_contents($file);
         $newContents = str_replace($replaceString, $replaceStringWith, $fileContents);
         file_put_contents($file, $newContents);
+        // rename file
+        $newName = str_replace('plugin-name', $pluginSlug, $file);
+        rename($file, $newName);
     }
 }
 // remove create-plugin.php
 
 // remove 
-unlink('plugin-name.php');
-//remove sohagwp
-unlink('sohagwp');
+// unlink('plugin-name.php');
+// //remove sohagwp
+// unlink('sohagwp');
 echo "Plugin Created Successfully\n";
 echo "Plugin Name: $pluginName\n";
 echo "Plugin Description: $pluginDescription\n";
