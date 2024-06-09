@@ -6,6 +6,7 @@
  * This file is read by WordPress to generate the plugin information in the plugin
  * admin area. This file also includes all of the dependencies used by the plugin,
  * registers the activation and deactivation functions, and defines a function
+ * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
  * @link              http://example.com
@@ -13,15 +14,15 @@
  * @package           Plugin_Name
  *
  * @wordpress-plugin
- * Plugin Name:       {{PLUGIN_NAME_STRING}}
- * Plugin URI:        {{PLUGIN_URI}}
- * Description:       {{PLUGIN_DESCRIPTION}}
- * Version:           {{PlUGIN_VERSION}}
- * Author:            {{PLUGIN_AUTHOR}}
+ * Plugin Name:       PLUGIN_NAME_STRING
+ * Plugin URI:        PLUGIN_URI
+ * Description:       PLUGIN_DESCRIPTION
+ * Version:           PlUGIN_VERSION
+ * Author:            PLUGIN_AUTHOR
  * Author URI:        http://example.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       {{TEXT_DOMAIN}}
+ * Text Domain:       TEXT_DOMAIN
  * Domain Path:       /languages
  */
 
@@ -35,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PLUGIN_NAME_VERSION', '{{PlUGIN_VERSION}}' );
+define( 'PLUGIN_NAME_VERSION', 'PlUGIN_VERSION' );
 
 /**
  * The code that runs during plugin activation.

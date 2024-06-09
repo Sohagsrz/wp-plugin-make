@@ -33,73 +33,49 @@ $plugin_function_key = strtolower(str_replace(' ', '_', $plugin_function_key));
 $plugin_file = $pluginSlug . '.php';
 //plugin-name.php load
 $configfileContents = file_get_contents('plugin-name.php');
-
-$mutedCodes=str_replace(
-    [
-        'plugin-name',
-        'PLUGIN_NAME_STRING',
-        'Plugin_Name',
-        'PLUGIN_URI',
-        'PLUGIN_DESCRIPTION',
-        'PlUGIN_VERSION',
-        'PLUGIN_AUTHOR',
-        'TEXT_DOMAIN',
-        'plugin_name',
-    ],
-    [
-        $pluginSlug,
-        $pluginName,
-        $plugin_key,
-        $pluginuri,
-        $pluginDescription,
-        $pluginVersion,
-        $pluginAuthor,
-        $pluginTextDomain,
-        $plugin_function_key,
-
-
-    ],
+$replaceString=  [
+    'plugin-name',
+    'PLUGIN_NAME_STRING',
+    'Plugin_Name',
+    'PLUGIN_URI',
+    'PLUGIN_DESCRIPTION',
+    'PlUGIN_VERSION',
+    'PLUGIN_AUTHOR',
+    'TEXT_DOMAIN',
+    'plugin_name',
+];
+$replaceStringWith=[
+    $pluginSlug,
+    $plugin_key,
+    $pluginName,
+    $pluginuri,
+    $pluginDescription,
+    $pluginVersion,
+    $pluginAuthor,
+    $pluginTextDomain,
+    $plugin_function_key,
+];
+$mutedCodes=str_replace( 
+    $replaceString,
+    $replaceStringWith,
     $configfileContents
 );
 file_put_contents($plugin_file, $mutedCodes);
-
-// check all dirs and rename plugin-name also replace the changes
-$dirs = array_filter(glob('*'), 'is_dir');
-foreach ($dirs as $dir) {
-    $dir = $dir . '/';
-    $files = array_filter(glob($dir . '*'), 'is_file');
-    foreach ($files as $file) {
-        $fileContents = file_get_contents($file);
-        $mutedCodes = str_replace(
-            [
-                'plugin-name',
-                'PLUGIN_NAME_STRING',
-                'Plugin_Name',
-                'PLUGIN_URI',
-                'PLUGIN_DESCRIPTION',
-                'PlUGIN_VERSION',
-                'PLUGIN_AUTHOR',
-                'TEXT_DOMAIN',
-                'plugin_name',
-            ],
-            [
-                $pluginSlug,
-                $pluginName,
-                $plugin_key,
-                $pluginuri,
-                $pluginDescription,
-                $pluginVersion,
-                $pluginAuthor,
-                $pluginTextDomain,
-                $plugin_function_key,
-            ],
-            $fileContents
-        );
-        file_put_contents($file, $mutedCodes);
+// check all files from current dir and dirs if rename file and folder rename and contents update by str_replace
+$files = scandir('.');
+foreach ($files as $file) {
+    if (is_dir($file) && $file != '.' && $file != '..') {
+        $newName = str_replace('plugin-name', $pluginSlug, $file);
+        rename($file, $newName);
     }
-    $newDir = str_replace('plugin-name', $pluginSlug, $dir);
-    rename($dir, $newDir);
+    if (is_file($file) && $file != 'create-plugin.php') {
+        $fileContents = file_get_contents($file);
+        $newContents = str_replace($replaceString, $replaceStringWith, $fileContents);
+        file_put_contents($file, $newContents);
+    }
 }
+// remove create-plugin.php
+
 // remove 
 unlink('plugin-name.php');
 //remove sohagwp
